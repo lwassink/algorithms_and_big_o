@@ -35,3 +35,26 @@ def largest_subsum1(array)
   subsets.max_by {|subset|  subset.reduce(:+) }.reduce(:+)
 
 end
+
+def largest_subsum2(array)
+  max_sum = nil
+  end_ind = 0
+  current_sum = 0
+
+  array.each_with_index do |ele, idx|
+    current_sum += ele
+    if max_sum.nil? || current_sum > max_sum
+      max_sum = current_sum
+      end_ind = idx
+    end
+  end
+
+  (0..end_ind).each do |idx|
+    current_sum -= array[idx]
+    if current_sum > max_sum
+      max_sum = current_sum
+    end
+  end
+
+  max_sum
+end
