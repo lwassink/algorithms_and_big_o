@@ -66,17 +66,17 @@ class StackQueue
   end
 
   def pop
-    transfer if out_box.empty?
+    transfer if @out_box.empty?
 
     @out_box.pop
   end
 
   def push(ele)
-    @in_box << ele
+    @in_box.push(ele)
   end
 
   def peek
-    transfer if out_box.empty?
+    transfer if @out_box.empty?
 
     @out_box.peek
   end
@@ -92,8 +92,8 @@ class StackQueue
   private
 
   def transfer
-    until in_box.empty?
-      out_box.push(in_box.pop)
+    until @in_box.empty?
+      @out_box.push(@in_box.pop)
     end
   end
 end
