@@ -1,4 +1,6 @@
-def my_min(array)
+require 'benchmark'
+
+def my_min(array)  #O(n^2)
   min = nil
   array.each do |ele1|
     is_min = true
@@ -57,4 +59,15 @@ def largest_subsum2(array)
   end
 
   max_sum
+end
+
+
+[10, 100, 1000, 10000].each do |size|
+  array = (1..size).to_a.shuffle
+  Benchmark.bm(7) do |x|
+    puts "testing #{size}"
+    x.report("my_min1") { largest_subsum1(array)  }
+
+    x.report("my_min2")  { largest_subsum2(array) }
+  end
 end

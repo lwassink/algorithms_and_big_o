@@ -90,6 +90,7 @@ class MinMaxStackQueue
 
   def enqueue(ele)
     @in_box.push(ele)
+
   end
 
   def peek

@@ -1,3 +1,7 @@
+require 'benchmark'
+
+ALPHABET = ('a'..'z').to_a
+
 def first_anagram?(string1, string2)
   anagrams = string1.chars.permutation #n!
   anagrams = anagrams.map {|anagram| anagram.join } #n * n!
@@ -21,7 +25,7 @@ def second_anagram?(string1, string2)  #space complexity O(n)
   string1.delete(nil)
   string2.delete(nil)
   string1 == string2
-end
+end # O(n^2)
 
 
 def third_anagram?(string1, string2) #space complexity is O(n)
@@ -50,4 +54,24 @@ def fifth_anagram?(string1, string2) #space complexity is O(n), time O(n)
   end
 
   hash.values.all? { |value| value == 0 }
+end
+
+[10, 1000, 100_000, 10_000_000, 1_000_000_000].each do |size|
+
+  string1 = ''
+  size.times { string1 << ALPHABET.sample }
+  string2 = string1.chars.shuffle.join
+
+  Benchmark.bm(3) do |x|
+    puts "testing #{size}..."
+    # x.report("first_anagram") { first_anagram?(string1, string2)  }
+
+    # x.report("second_anagram")  { second_anagram?(string1, string2) }
+
+    x.report("third_anagram") { third_anagram?(string1, string2)  }
+
+    x.report("fourth_anagram") { fourth_anagram?(string1, string2)  }
+
+    x.report("fifth_anagram") { fifth_anagram?(string1, string2)  }
+  end
 end

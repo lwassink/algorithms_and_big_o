@@ -1,3 +1,5 @@
+require 'benchmark'
+
 def bad_two_sum(array, target)
   array.each_with_index do |el1, idx1|
     array.each_with_index do |el2, idx2|
@@ -8,7 +10,7 @@ def bad_two_sum(array, target)
   end
 
   false
-end
+end # O(n^2)
 
 def ok_two_sum(array, target)
   array.sort!
@@ -25,18 +27,39 @@ def ok_two_sum(array, target)
     end
   end
   false
-end
+end # O(n log n)
 
 
 def pair_sum?(array, target)
-  hash = Hash.new(false)
+  hash = Hash.new([])
 
-  array.each do |ele|
-    hash[ele] = true
+  array.each_with_index do |ele, idx|
+    hash[ele] = idx
   end
 
-  array.each do |ele|
-    return true if hash[target - ele]
+  array.each_with_index do |ele, idx|
+    return true if hash[ele] != idx
   end
   false
+end # O(n)
+
+[1000, 10_000, 1_000_000, 10_000_000].each do |size|
+
+  # array0 = Array.new(size/5, 0)
+  # array1 = Array.new(size/5, 1)
+  # array2 = Array.new(size/5, 2)
+  # array3 = Array.new(size/5, 3)
+  # array4 = Array.new(size/5, 4)
+  # array = array0 + array1 + array2 +array3 +array4
+  # array << 5 << 5
+  array = (1..size).to_a.shuffle
+  target = 10
+  Benchmark.bm(3) do |x|
+    puts "testing #{size}..."
+    # x.report("bad_two_sum:") { bad_two_sum(array, target) }
+
+    x.report("ok_two_sum:") { ok_two_sum(array, target)  }
+
+    x.report("pair_sum:") { pair_sum?(array, target)   }
+  end
 end
